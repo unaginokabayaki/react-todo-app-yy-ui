@@ -1,4 +1,10 @@
+class Todo extends React.Component {
+  render() {
+    return <div>react new page</div>
+  }
+}
+
 ReactDOM.render(
-  <h1>Hello world</h1>,
+  <Todo /> ,
   document.getElementById('root')
 );
