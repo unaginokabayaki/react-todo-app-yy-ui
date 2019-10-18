@@ -9,19 +9,61 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 var Todo = function (_React$Component) {
   _inherits(Todo, _React$Component);
 
-  function Todo() {
+  function Todo(props) {
     _classCallCheck(this, Todo);
 
-    return _possibleConstructorReturn(this, (Todo.__proto__ || Object.getPrototypeOf(Todo)).apply(this, arguments));
+    var _this = _possibleConstructorReturn(this, (Todo.__proto__ || Object.getPrototypeOf(Todo)).call(this, props));
+
+    console.log(props);
+    _this.state = { done: props.done == "true",
+      text: props.text };
+    console.log(_this.state);
+
+    _this.handleClick = _this.handleClick.bind(_this);
+    _this.handleChange = _this.handleChange.bind(_this);
+    _this.handleSubmit = _this.handleSubmit.bind(_this);
+    return _this;
   }
 
   _createClass(Todo, [{
-    key: 'render',
+    key: "handleClick",
+    value: function handleClick(event) {
+      this.setState(function (state) {
+        return {
+          done: !state.done
+        };
+      }, function (event) {
+        this.handleSubmit(event);
+      });
+    }
+  }, {
+    key: "handleChange",
+    value: function handleChange(event) {
+      var text = event.target.value;
+      this.setState(function (state) {
+        return {
+          text: text
+        };
+      });
+    }
+  }, {
+    key: "handleSubmit",
+    value: function handleSubmit(event) {
+      console.log("this is where submit happens");
+      // this.setState(state => ({
+
+      // }));
+    }
+  }, {
+    key: "render",
     value: function render() {
+      // let checked = (this.props.done == 'true')
+      // let value = this.props.text
       return React.createElement(
-        'div',
-        null,
-        'react new page'
+        "div",
+        { className: "todo" },
+        React.createElement("input", { type: "checkbox", checked: this.state.done, onClick: this.handleClick }),
+        React.createElement("input", { type: "text", value: this.state.text, onChange: this.handleChange, onBlur: this.handleSubmit })
       );
     }
   }]);
@@ -29,4 +71,4 @@ var Todo = function (_React$Component) {
   return Todo;
 }(React.Component);
 
-ReactDOM.render(React.createElement(Todo, null), document.getElementById('root'));
+ReactDOM.render(React.createElement(Todo, { done: "true", text: "aaaa" }), document.getElementById('root'));

@@ -1,10 +1,52 @@
 class Todo extends React.Component {
+  constructor(props) {
+    super(props);
+    console.log(props);
+    this.state = { done: (props.done == "true" ),
+                   text: props.text };
+    console.log(this.state);
+
+    this.handleClick = this.handleClick.bind(this);
+    this.handleChange = this.handleChange.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
+  }
+
+  handleClick(event) {
+    this.setState(state => ({
+      done: !state.done
+    }),
+    function (event) {
+      this.handleSubmit(event);
+    });
+  }
+
+  handleChange(event) {
+    let text = event.target.value;
+    this.setState(state => ({
+      text: text
+    }));
+  }
+
+  handleSubmit(event) {
+    console.log("this is where submit happens")
+    // this.setState(state => ({
+      
+    // }));
+  }
+
   render() {
-    return <div>react new page</div>
+    // let checked = (this.props.done == 'true')
+    // let value = this.props.text
+    return  <div className="todo">
+            <input type="checkbox" checked={this.state.done} onClick={this.handleClick} />
+            <input type="text" value={this.state.text} onChange={this.handleChange} onBlur={this.handleSubmit} />
+            </div>
   }
 }
 
+
+
 ReactDOM.render(
-  <Todo /> ,
+  <Todo done="true" text="aaaa"/> ,
   document.getElementById('root')
 );
