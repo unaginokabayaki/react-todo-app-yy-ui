@@ -39,7 +39,8 @@ class Todo extends React.Component {
     // let value = this.props.text
     return  <div className="todo">
             <input type="checkbox" checked={this.state.done} onClick={this.handleClick} />
-            <input type="text" value={this.state.text} onChange={this.handleChange} onBlur={this.handleSubmit} />
+            <input type="text" value={this.state.text} onChange={this.handleChange} onBlur={this.handleSubmit} 
+                    className={this.state.done ? "done" : "not-done"}/>
             </div>
   }
 }
