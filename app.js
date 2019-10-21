@@ -49,10 +49,26 @@ var Todo = function (_React$Component) {
   }, {
     key: "handleSubmit",
     value: function handleSubmit(event) {
-      console.log("this is where submit happens");
-      // this.setState(state => ({
+      var _this2 = this;
 
-      // }));
+      console.log("submit todo");
+      var id = this.props.id || this.state._id;
+      if (id == "" || id == undefined) {
+        fetch('http://localhost:3000/todos/', {
+          method: 'post',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            text: this.state.text,
+            done: this.state.done
+          })
+        }).then(function (response) {
+          return response.json();
+        }).then(function (data) {
+          return _this2.setState(function (state) {
+            return { _id: data._id };
+          });
+        });
+      }
     }
   }, {
     key: "render",
@@ -62,8 +78,11 @@ var Todo = function (_React$Component) {
       return React.createElement(
         "div",
         { className: "todo" },
-        React.createElement("input", { type: "checkbox", checked: this.state.done, onClick: this.handleClick }),
-        React.createElement("input", { type: "text", value: this.state.text, onChange: this.handleChange, onBlur: this.handleSubmit,
+        React.createElement("input", { type: "checkbox", checked: this.state.done,
+          onClick: this.handleClick }),
+        React.createElement("input", { type: "text", value: this.state.text,
+          onChange: this.handleChange,
+          onBlur: this.handleSubmit,
           className: this.state.done ? "done" : "not-done" })
       );
     }
@@ -78,23 +97,23 @@ var TodoList = function (_React$Component2) {
   function TodoList(props) {
     _classCallCheck(this, TodoList);
 
-    var _this2 = _possibleConstructorReturn(this, (TodoList.__proto__ || Object.getPrototypeOf(TodoList)).call(this, props));
+    var _this3 = _possibleConstructorReturn(this, (TodoList.__proto__ || Object.getPrototypeOf(TodoList)).call(this, props));
 
-    _this2.state = { todos: [] };
+    _this3.state = { todos: [] };
 
-    _this2.newTodo = _this2.newTodo.bind(_this2);
-    return _this2;
+    _this3.newTodo = _this3.newTodo.bind(_this3);
+    return _this3;
   }
 
   _createClass(TodoList, [{
     key: "componentDidMount",
     value: function componentDidMount() {
-      var _this3 = this;
+      var _this4 = this;
 
       fetch('http://localhost:3000/todos/').then(function (response) {
         return response.json();
       }).then(function (data) {
-        _this3.setState(function (state) {
+        _this4.setState(function (state) {
           return {
             todos: data.todos
           };
@@ -119,7 +138,7 @@ var TodoList = function (_React$Component2) {
     key: "render",
     value: function render() {
       var todoList = this.state.todos.map(function (todo) {
-        return React.createElement(Todo, { key: todo._id.toString(), text: todo.text, done: todo.done });
+        return React.createElement(Todo, { id: todo._id, key: todo._id.toString(), text: todo.text, done: todo.done });
       });
 
       return React.createElement(

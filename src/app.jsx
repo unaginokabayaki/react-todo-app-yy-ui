@@ -28,19 +28,31 @@ class Todo extends React.Component {
   }
 
   handleSubmit(event) {
-    console.log("this is where submit happens")
-    // this.setState(state => ({
-      
-    // }));
+    console.log("submit todo")
+    let id = this.props.id || this.state._id;
+    if(id == "" || id == undefined) {
+      fetch('http://localhost:3000/todos/', {
+        method: 'post',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({ 
+          text: this.state.text, 
+          done: this.state.done 
+        })
+      }).then(response => response.json())
+      .then(data => this.setState(state => ({ _id: data._id })));
+    }
   }
 
   render() {
     // let checked = (this.props.done == 'true')
     // let value = this.props.text
     return  <div className="todo">
-            <input type="checkbox" checked={this.state.done} onClick={this.handleClick} />
-            <input type="text" value={this.state.text} onChange={this.handleChange} onBlur={this.handleSubmit} 
-                    className={this.state.done ? "done" : "not-done"}/>
+            <input type="checkbox" checked={this.state.done} 
+                                  onClick={this.handleClick} />
+            <input type="text" value={this.state.text} 
+                                onChange={this.handleChange} 
+                                onBlur={this.handleSubmit} 
+                                className={this.state.done ? "done" : "not-done"}/>
             </div>
   }
 }
@@ -77,7 +89,7 @@ class TodoList extends React.Component {
 
   render() {
     const todoList = this.state.todos.map((todo) => 
-      <Todo key={todo._id.toString()} text={todo.text} done={todo.done} />
+      <Todo id={todo._id} key={todo._id.toString()} text={todo.text} done={todo.done} />
     );
 
     return <React.Fragment>
