@@ -2,8 +2,8 @@ class Todo extends React.Component {
   constructor(props) {
     super(props);
     console.log(props);
-    this.state = { done: (props.done == "true" ),
-                   text: props.text };
+    this.state = { done: props.done,
+                   text: props.text};
     console.log(this.state);
 
     this.handleClick = this.handleClick.bind(this);
@@ -29,7 +29,7 @@ class Todo extends React.Component {
 
   handleSubmit(event) {
     console.log("submit todo")
-    let id = this.props.id || this.state._id;
+    let id = this.props.id;
     if(id == "" || id == undefined) {
       fetch('http://localhost:3000/todos/', {
         method: 'post',
@@ -40,12 +40,19 @@ class Todo extends React.Component {
         })
       }).then(response => response.json())
       .then(data => this.setState(state => ({ _id: data._id })));
+    } else {
+      fetch(`http://localhost:3000/todos/${id}`, {
+        method: 'put',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({
+          text: this.state.text,
+          done: this.state.done
+        })
+      })
     }
   }
 
   render() {
-    // let checked = (this.props.done == 'true')
-    // let value = this.props.text
     return  <div className="todo">
             <input type="checkbox" checked={this.state.done} 
                                   onClick={this.handleClick} />

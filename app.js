@@ -15,7 +15,7 @@ var Todo = function (_React$Component) {
     var _this = _possibleConstructorReturn(this, (Todo.__proto__ || Object.getPrototypeOf(Todo)).call(this, props));
 
     console.log(props);
-    _this.state = { done: props.done == "true",
+    _this.state = { done: props.done,
       text: props.text };
     console.log(_this.state);
 
@@ -52,7 +52,7 @@ var Todo = function (_React$Component) {
       var _this2 = this;
 
       console.log("submit todo");
-      var id = this.props.id || this.state._id;
+      var id = this.props.id;
       if (id == "" || id == undefined) {
         fetch('http://localhost:3000/todos/', {
           method: 'post',
@@ -68,13 +68,20 @@ var Todo = function (_React$Component) {
             return { _id: data._id };
           });
         });
+      } else {
+        fetch("http://localhost:3000/todos/" + id, {
+          method: 'put',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            text: this.state.text,
+            done: this.state.done
+          })
+        });
       }
     }
   }, {
     key: "render",
     value: function render() {
-      // let checked = (this.props.done == 'true')
-      // let value = this.props.text
       return React.createElement(
         "div",
         { className: "todo" },
