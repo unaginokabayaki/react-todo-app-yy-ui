@@ -80,29 +80,28 @@ var TodoList = function (_React$Component2) {
 
     var _this2 = _possibleConstructorReturn(this, (TodoList.__proto__ || Object.getPrototypeOf(TodoList)).call(this, props));
 
-    _this2.state = { todos: [{
-        _id: 'a',
-        text: 'Item 1',
-        done: false
-      }, {
-        _id: 'b',
-        text: 'Item 2',
-        done: false
-      }, {
-        _id: 'c',
-        text: 'Item 3',
-        done: false
-      }, {
-        _id: 'd',
-        text: 'Item 4',
-        done: false
-      }] };
+    _this2.state = { todos: [] };
 
     _this2.newTodo = _this2.newTodo.bind(_this2);
     return _this2;
   }
 
   _createClass(TodoList, [{
+    key: "componentDidMount",
+    value: function componentDidMount() {
+      var _this3 = this;
+
+      fetch('http://localhost:3000/todos/').then(function (response) {
+        return response.json();
+      }).then(function (data) {
+        _this3.setState(function (state) {
+          return {
+            todos: data.todos
+          };
+        });
+      });
+    }
+  }, {
     key: "newTodo",
     value: function newTodo(event) {
       event.preventDefault();

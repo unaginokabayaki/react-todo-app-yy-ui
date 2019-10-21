@@ -49,30 +49,19 @@ class TodoList extends React.Component {
   constructor(props) {
     super(props);
 
-    this.state = { todos: [
-      {
-        _id: 'a',
-        text: 'Item 1',
-        done: false
-      },
-      {
-        _id: 'b',
-        text: 'Item 2',
-        done: false
-      },
-      {
-        _id: 'c',
-        text: 'Item 3',
-        done: false
-      },
-      {
-        _id: 'd',
-        text: 'Item 4',
-        done: false
-      }
-    ]};
+    this.state = { todos: [] };
 
     this.newTodo = this.newTodo.bind(this);
+  }
+
+  componentDidMount() {
+    fetch('http://localhost:3000/todos/')
+      .then(response => response.json())
+      .then(data => {
+        this.setState(state => ({
+          todos: data.todos
+        }));
+      });
   }
 
   newTodo(event) {
